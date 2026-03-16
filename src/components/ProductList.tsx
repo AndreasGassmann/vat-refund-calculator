@@ -71,11 +71,11 @@ const ProductList: React.FC = () => {
       <div className="list-header">
         <h1>Saved Products</h1>
         <div className="header-actions">
-          <Link to="/" className="add-new-btn">
+          <Link to="/" className="btn btn--primary">
             Add New Product
           </Link>
           {products.length > 0 && (
-            <button className="clear-all-btn" onClick={handleClearAll}>
+            <button className="btn btn--danger" onClick={handleClearAll}>
               Clear All
             </button>
           )}
@@ -87,7 +87,7 @@ const ProductList: React.FC = () => {
           <div className="empty-icon">📦</div>
           <h2>No products saved yet</h2>
           <p>Add your first product to start comparing prices!</p>
-          <Link to="/" className="add-first-btn">
+          <Link to="/" className="btn btn--coral">
             Add Your First Product
           </Link>
         </div>
@@ -144,7 +144,8 @@ const ProductList: React.FC = () => {
               <div className="product-actions">
                 <Link
                   to={`/product/${product.id}`}
-                  className="view-details-btn"
+                  className="btn btn--outline-primary"
+                  style={{ width: "100%" }}
                 >
                   View Details
                 </Link>

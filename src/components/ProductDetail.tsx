@@ -63,7 +63,7 @@ const ProductDetail: React.FC = () => {
           <p>
             The product you're looking for doesn't exist or has been deleted.
           </p>
-          <Link to="/products" className="back-to-list-btn">
+          <Link to="/products" className="btn btn--coral">
             Back to Products
           </Link>
         </div>
@@ -116,7 +116,7 @@ const ProductDetail: React.FC = () => {
 
         <div className="comparison-section">
           <h2>Price Comparison</h2>
-          <div className="comparison-table">
+          <div className="data-table">
             <div className="table-header">
               <div className="table-cell">Option</div>
               <div className="table-cell">Price</div>
@@ -134,7 +134,7 @@ const ProductDetail: React.FC = () => {
                 <div className="table-cell option-cell">
                   {comparison.option}
                   {index === 0 && (
-                    <span className="best-deal">🏆 Best Deal</span>
+                    <span className="best-deal">Best Deal</span>
                   )}
                 </div>
                 <div className="table-cell price-cell">

@@ -150,7 +150,7 @@ const CurrencyConverter: React.FC = () => {
             value={productName}
             onChange={handleProductNameChange}
             placeholder="Enter product name"
-            className="currency-input"
+            className="input"
           />
         </div>
 
@@ -164,7 +164,7 @@ const CurrencyConverter: React.FC = () => {
             value={eurAmount}
             onChange={handleEurInputChange}
             placeholder="Enter EUR amount"
-            className="currency-input"
+            className="input"
           />
         </div>
 
@@ -178,21 +178,21 @@ const CurrencyConverter: React.FC = () => {
             value={swissPrice}
             onChange={handleSwissInputChange}
             placeholder="Enter Swiss price for comparison"
-            className="currency-input"
+            className="input"
           />
         </div>
       </div>
 
-      {error && <div className="error-message">{error}</div>}
+      {error && <div className="message--error">{error}</div>}
 
-      {saveSuccess && <div className="success-message">{saveSuccess}</div>}
+      {saveSuccess && <div className="message--success">{saveSuccess}</div>}
 
       {loading && <div className="loading">Calculating...</div>}
 
       {comparisonResult && (
         <div className="add-product-section">
           <button
-            className="add-product-btn"
+            className="btn btn--coral"
             onClick={handleSaveProduct}
             disabled={!productName.trim()}
           >
@@ -205,7 +205,7 @@ const CurrencyConverter: React.FC = () => {
         <div className="comparison-section">
           <h2>Price Comparison (Cheapest First)</h2>
           <div
-            className={`comparison-table ${
+            className={`data-table ${
               comparisonResult.swissPrice > 0
                 ? "with-swiss-price"
                 : "without-swiss-price"
@@ -229,7 +229,7 @@ const CurrencyConverter: React.FC = () => {
                 <div className="table-cell option-cell">
                   {comparison.option}
                   {index === 0 && (
-                    <span className="best-deal">🏆 Best Deal</span>
+                    <span className="best-deal">Best Deal</span>
                   )}
                 </div>
                 <div className="table-cell price-cell">

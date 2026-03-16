@@ -1,74 +1,97 @@
-/* About.css - Admin panel style */
+/* About.css — Page-specific styles only */
 
 .about {
-  max-width: 800px;
+  max-width: 740px;
   margin: 0 auto;
 }
 
 .about-content {
-  background: #ffffff;
-  padding: 2rem;
-  border-radius: 8px;
-  border: 1px solid #e2e8f0;
+  background: var(--color-surface);
+  padding: 2.5rem;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--color-border);
+  box-shadow: var(--shadow-sm);
 }
 
 .about-content h1 {
-  color: #0f172a;
-  font-size: 1.5rem;
-  font-weight: 700;
-  margin-bottom: 1.5rem;
+  font-family: var(--font-heading);
+  color: var(--color-foreground);
+  font-size: clamp(1.5rem, 3.5vw, 2rem);
+  font-weight: 600;
+  margin-bottom: 2rem;
   letter-spacing: -0.02em;
+  line-height: 1.2;
 }
 
 .about-section {
-  margin-bottom: 1.5rem;
-  padding-bottom: 1.25rem;
-  border-bottom: 1px solid #f1f5f9;
+  margin-bottom: 1.75rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid var(--color-border-light);
 }
 
 .about-section:last-child {
   border-bottom: none;
   margin-bottom: 0;
+  padding-bottom: 0;
 }
 
 .about-section h2 {
-  color: #1e293b;
-  font-size: 1rem;
-  margin-bottom: 0.625rem;
+  font-family: var(--font-heading);
+  color: var(--color-foreground);
+  font-size: 1.15rem;
+  margin-bottom: 0.75rem;
   font-weight: 600;
 }
 
 .about-section p {
-  color: #64748b;
-  line-height: 1.7;
+  color: var(--color-foreground-muted);
+  line-height: 1.75;
   margin-bottom: 0.75rem;
-  font-size: 0.875rem;
+  font-size: 0.95rem;
+}
+
+.about-section a {
+  color: var(--color-primary);
+  text-decoration: none;
+  font-weight: 600;
+  transition: color var(--transition);
+  border-bottom: 1.5px solid transparent;
+}
+
+.about-section a:hover {
+  color: var(--color-primary-hover);
+  border-bottom-color: var(--color-primary-hover);
 }
 
 .about-section ol,
 .about-section ul {
-  color: #64748b;
+  color: var(--color-foreground-muted);
   padding-left: 1.5rem;
-  line-height: 1.7;
-  font-size: 0.875rem;
+  line-height: 1.75;
+  font-size: 0.95rem;
 }
 
 .about-section li {
-  margin-bottom: 0.375rem;
+  margin-bottom: 0.5rem;
+  padding-left: 0.25rem;
+}
+
+.about-section li::marker {
+  color: var(--color-coral);
 }
 
 .about-section strong {
-  color: #1e293b;
+  color: var(--color-foreground);
   font-weight: 600;
 }
 
-/* Responsive Design */
+/* Responsive */
 @media (max-width: 768px) {
   .about-content {
-    padding: 1.5rem;
+    padding: 1.75rem;
   }
 
   .about-content h1 {
-    font-size: 1.25rem;
+    font-size: 1.375rem;
   }
 }
