@@ -1,0 +1,74 @@
+/* About.css - Admin panel style */
+
+.about {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.about-content {
+  background: #ffffff;
+  padding: 2rem;
+  border-radius: 8px;
+  border: 1px solid #e2e8f0;
+}
+
+.about-content h1 {
+  color: #0f172a;
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-bottom: 1.5rem;
+  letter-spacing: -0.02em;
+}
+
+.about-section {
+  margin-bottom: 1.5rem;
+  padding-bottom: 1.25rem;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.about-section:last-child {
+  border-bottom: none;
+  margin-bottom: 0;
+}
+
+.about-section h2 {
+  color: #1e293b;
+  font-size: 1rem;
+  margin-bottom: 0.625rem;
+  font-weight: 600;
+}
+
+.about-section p {
+  color: #64748b;
+  line-height: 1.7;
+  margin-bottom: 0.75rem;
+  font-size: 0.875rem;
+}
+
+.about-section ol,
+.about-section ul {
+  color: #64748b;
+  padding-left: 1.5rem;
+  line-height: 1.7;
+  font-size: 0.875rem;
+}
+
+.about-section li {
+  margin-bottom: 0.375rem;
+}
+
+.about-section strong {
+  color: #1e293b;
+  font-weight: 600;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .about-content {
+    padding: 1.5rem;
+  }
+
+  .about-content h1 {
+    font-size: 1.25rem;
+  }
+}
