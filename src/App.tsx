@@ -36,6 +36,31 @@ function App() {
             <Route path="/about" element={<About />} />
           </Routes>
         </main>
+
+        <footer className="footer">
+          <div className="footer-container">
+            <span className="footer-text">
+              Built by{" "}
+              <a
+                href="https://andycodes.dev"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="footer-link"
+              >
+                andycodes.dev
+              </a>
+            </span>
+            <span className="footer-separator">·</span>
+            <a
+              href="https://github.com/AndreasGassmann/vat-refund-calculator"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="footer-link"
+            >
+              GitHub
+            </a>
+          </div>
+        </footer>
       </div>
     </Router>
   );

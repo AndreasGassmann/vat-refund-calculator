@@ -87,6 +87,39 @@ body {
   width: 100%;
 }
 
+/* Footer */
+.footer {
+  border-top: 1px solid #e2e8f0;
+  background: #ffffff;
+  padding: 1rem 1.5rem;
+  margin-top: auto;
+}
+
+.footer-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  font-size: 0.8125rem;
+  color: #64748b;
+}
+
+.footer-link {
+  color: #64748b;
+  text-decoration: none;
+  transition: color 0.15s ease;
+}
+
+.footer-link:hover {
+  color: #2563eb;
+}
+
+.footer-separator {
+  color: #cbd5e1;
+}
+
 /* Responsive Design */
 @media (max-width: 768px) {
   .nav-container {
