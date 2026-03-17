@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useParams, Link } from "react-router-dom";
 import { getSavedProducts, recalculateAllProducts, SavedProduct } from "../utils/storage";
 import { formatCurrency, formatPercentageDiff } from "../utils/currency";
+import { CalculationTooltip } from "./CurrencyConverter";
 import "./ProductDetail.css";
 
 const ProductDetail: React.FC = () => {
@@ -137,8 +138,11 @@ const ProductDetail: React.FC = () => {
                     <span className="best-deal">Best Deal</span>
                   )}
                 </div>
-                <div className="table-cell price-cell">
+                <div className="table-cell price-cell price-cell--with-tooltip">
                   {formatCurrency(comparison.price, "CHF")}
+                  {comparison.calculationSteps && comparison.calculationSteps.length > 1 && (
+                    <CalculationTooltip steps={comparison.calculationSteps} />
+                  )}
                 </div>
                 <div
                   className={`table-cell percentage-cell ${

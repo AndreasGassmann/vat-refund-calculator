@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import {
   calculateConversion,
   createPriceComparison,
@@ -6,9 +6,56 @@ import {
   formatPercentageDiff,
   ConversionResult,
   ComparisonResult,
+  CalculationStep,
 } from "../utils/currency";
 import { saveProduct } from "../utils/storage";
 import "./CurrencyConverter.css";
+
+export const CalculationTooltip: React.FC<{ steps: CalculationStep[] }> = ({ steps }) => {
+  const tooltipRef = useRef<HTMLDivElement>(null);
+  const [position, setPosition] = useState<'bottom' | 'top'>('bottom');
+  const [visible, setVisible] = useState(false);
+
+  useEffect(() => {
+    if (visible && tooltipRef.current) {
+      const rect = tooltipRef.current.getBoundingClientRect();
+      if (rect.bottom > window.innerHeight) {
+        setPosition('top');
+      } else if (rect.top < 0) {
+        setPosition('bottom');
+      }
+    }
+  }, [visible]);
+
+  return (
+    <span
+      className="calc-info-trigger"
+      onMouseEnter={() => setVisible(true)}
+      onMouseLeave={() => { setVisible(false); setPosition('bottom'); }}
+    >
+      <span className="calc-info-icon">i</span>
+      {visible && (
+        <div ref={tooltipRef} className={`calc-tooltip calc-tooltip--${position}`}>
+          <div className="calc-tooltip__title">Calculation Breakdown</div>
+          <div className="calc-tooltip__steps">
+            {steps.map((step, i) => {
+              const isFinal = i === steps.length - 1 && steps.length > 1;
+              return (
+                <div key={i} className={`calc-tooltip__step ${isFinal ? 'calc-tooltip__step--final' : ''}`}>
+                  <span className="calc-tooltip__label">{step.label}</span>
+                  <div className="calc-tooltip__values">
+                    {step.formula && <span className="calc-tooltip__formula">{step.formula}</span>}
+                    <span className="calc-tooltip__result">{step.result}</span>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      )}
+    </span>
+  );
+};
 
 const CurrencyConverter: React.FC = () => {
   const [productName, setProductName] = useState<string>("");
@@ -232,8 +279,11 @@ const CurrencyConverter: React.FC = () => {
                     <span className="best-deal">Best Deal</span>
                   )}
                 </div>
-                <div className="table-cell price-cell">
+                <div className="table-cell price-cell price-cell--with-tooltip">
                   {formatCurrency(comparison.price, "CHF")}
+                  {comparison.calculationSteps.length > 1 && (
+                    <CalculationTooltip steps={comparison.calculationSteps} />
+                  )}
                 </div>
                 <div
                   className={`table-cell percentage-cell ${

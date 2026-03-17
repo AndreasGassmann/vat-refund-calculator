@@ -6,6 +6,7 @@ import {
   addSwissTax,
   createPriceComparison,
   fetchExchangeRate,
+  CalculationStep,
 } from "./currency";
 
 export interface SavedProduct {
@@ -27,6 +28,7 @@ export interface SavedProduct {
       price: number;
       description: string;
       percentageDiff: number;
+      calculationSteps: CalculationStep[];
     }>;
   };
   bestPrice: number;

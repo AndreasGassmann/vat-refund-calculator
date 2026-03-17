@@ -19,11 +19,18 @@ export interface ConversionResult {
   exchangeRate: number;
 }
 
+export interface CalculationStep {
+  label: string;
+  formula: string;
+  result: string;
+}
+
 export interface PriceComparison {
   option: string;
   price: number;
   description: string;
   percentageDiff: number;
+  calculationSteps: CalculationStep[];
 }
 
 export interface ComparisonResult {
@@ -138,10 +145,14 @@ export function createPriceComparison(
   conversionResult: ConversionResult
 ): ComparisonResult {
   const comparisons: PriceComparison[] = [];
+  const fmt = (n: number) => n.toFixed(2);
+  const rate = conversionResult.exchangeRate;
+  const eurAmount = conversionResult.originalAmount;
 
   // Add Swiss options only if Swiss price is provided
   if (swissPrice !== null && swissPrice > 0) {
     const swissPriceWithRefund = applySwissRefund(swissPrice);
+    const refundAmount = swissPrice * (SWISS_REFUND_RATE / 100);
 
     comparisons.push(
       {
@@ -149,6 +160,9 @@ export function createPriceComparison(
         price: swissPrice,
         description: "Direct purchase in Switzerland",
         percentageDiff: 0, // Reference point
+        calculationSteps: [
+          { label: "Swiss retail price", formula: `CHF ${fmt(swissPrice)}`, result: `CHF ${fmt(swissPrice)}` },
+        ],
       },
       {
         option: "🇨🇭 Swiss Price with Refund",
@@ -156,12 +170,22 @@ export function createPriceComparison(
         description: "Swiss price with 4.5% refund applied",
         percentageDiff:
           ((swissPriceWithRefund - swissPrice) / swissPrice) * 100,
+        calculationSteps: [
+          { label: "Swiss retail price", formula: `CHF ${fmt(swissPrice)}`, result: `CHF ${fmt(swissPrice)}` },
+          { label: `Refund (${SWISS_REFUND_RATE}%)`, formula: `${fmt(swissPrice)} × ${SWISS_REFUND_RATE}%`, result: `− CHF ${fmt(refundAmount)}` },
+          { label: "Final price", formula: `${fmt(swissPrice)} − ${fmt(refundAmount)}`, result: `CHF ${fmt(swissPriceWithRefund)}` },
+        ],
       }
     );
   }
 
   // Determine reference point for percentage calculations
   const referencePrice = swissPrice || conversionResult.convertedAmount;
+
+  // Pre-calculate intermediate values for German options
+  const chfConverted = conversionResult.convertedAmount;
+  const germanTaxAmount = chfConverted - conversionResult.afterGermanTax;
+  const swissTaxAmount = conversionResult.afterSwissTax - conversionResult.afterGermanTax;
 
   // Always add German options
   comparisons.push(
@@ -172,6 +196,14 @@ export function createPriceComparison(
       percentageDiff:
         ((conversionResult.afterSwissTax - referencePrice) / referencePrice) *
         100,
+      calculationSteps: [
+        { label: "Original price", formula: `€${fmt(eurAmount)}`, result: `€${fmt(eurAmount)}` },
+        { label: "Convert to CHF", formula: `${fmt(eurAmount)} × ${rate.toFixed(4)}`, result: `CHF ${fmt(chfConverted)}` },
+        { label: `Remove German VAT (${TAX_RATES.german}%)`, formula: `${fmt(chfConverted)} ÷ 1.${TAX_RATES.german}`, result: `− CHF ${fmt(germanTaxAmount)}` },
+        { label: "Net price", formula: "", result: `CHF ${fmt(conversionResult.afterGermanTax)}` },
+        { label: `Add Swiss VAT (${TAX_RATES.swiss}%)`, formula: `${fmt(conversionResult.afterGermanTax)} × ${TAX_RATES.swiss}%`, result: `+ CHF ${fmt(swissTaxAmount)}` },
+        { label: "Final price", formula: `${fmt(conversionResult.afterGermanTax)} + ${fmt(swissTaxAmount)}`, result: `CHF ${fmt(conversionResult.afterSwissTax)}` },
+      ],
     },
     {
       option: "🇩🇪 After German Tax Refund",
@@ -180,6 +212,12 @@ export function createPriceComparison(
       percentageDiff:
         ((conversionResult.afterGermanTax - referencePrice) / referencePrice) *
         100,
+      calculationSteps: [
+        { label: "Original price", formula: `€${fmt(eurAmount)}`, result: `€${fmt(eurAmount)}` },
+        { label: "Convert to CHF", formula: `${fmt(eurAmount)} × ${rate.toFixed(4)}`, result: `CHF ${fmt(chfConverted)}` },
+        { label: `Remove German VAT (${TAX_RATES.german}%)`, formula: `${fmt(chfConverted)} ÷ 1.${TAX_RATES.german}`, result: `− CHF ${fmt(germanTaxAmount)}` },
+        { label: "Final price", formula: "", result: `CHF ${fmt(conversionResult.afterGermanTax)}` },
+      ],
     },
     {
       option: "🇩🇪 Converted CHF",
@@ -188,6 +226,10 @@ export function createPriceComparison(
       percentageDiff:
         ((conversionResult.convertedAmount - referencePrice) / referencePrice) *
         100,
+      calculationSteps: [
+        { label: "Original price", formula: `€${fmt(eurAmount)}`, result: `€${fmt(eurAmount)}` },
+        { label: "Convert to CHF", formula: `${fmt(eurAmount)} × ${rate.toFixed(4)}`, result: `CHF ${fmt(chfConverted)}` },
+      ],
     }
   );
 
